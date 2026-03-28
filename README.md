@@ -19,7 +19,7 @@ Scrolla no X. Para num post. Ela curte. Simples assim.
 
 ## ✨ O que faz
 
-O algoritmo do X é simples: **o que você dá, recebe de volta.**
+O algoritmo do X é simples: **o que você dá, recebe de volta.** (Lá ele kk)
 
 O problema é que a gente lê um monte de post, acha interessante, mas esquece de curtir. O `readlike` resolve isso de forma inteligente:
 
