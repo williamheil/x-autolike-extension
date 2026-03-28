@@ -5,13 +5,13 @@
 **A extensão que curte o que você realmente leu.**  
 Scrolla no X. Para num post. Ela curte. Simples assim.
 
-[![Opera](https://img.shields.io/badge/Opera-Extension-FF1B2D?style=for-the-badge&logo=opera&logoColor=white)](https://addons.opera.com)
+[![Chrome](https://img.shields.io/badge/Chrome-Compatível-4285F4?style=for-the-badge&logo=googlechrome&logoColor=white)](#-google-chrome)
+[![Opera](https://img.shields.io/badge/Opera-Compatível-FF1B2D?style=for-the-badge&logo=opera&logoColor=white)](#-opera)
+[![Edge](https://img.shields.io/badge/Edge-Compatível-0078D4?style=for-the-badge&logo=microsoftedge&logoColor=white)](#-microsoft-edge)
+[![Brave](https://img.shields.io/badge/Brave-Compatível-FB542B?style=for-the-badge&logo=brave&logoColor=white)](#-brave)
 [![Licença MIT](https://img.shields.io/badge/Licença-MIT-1d9bf0?style=for-the-badge)](LICENSE)
-[![Feito com Claude](https://img.shields.io/badge/Feito%20com-Claude%20AI-a855f7?style=for-the-badge)](https://claude.ai)
 
 <br/>
-
-![readlike demo](https://raw.githubusercontent.com/WilliamP2P/readlike/main/assets/preview.png)
 
 </div>
 
@@ -19,7 +19,7 @@ Scrolla no X. Para num post. Ela curte. Simples assim.
 
 ## ✨ O que faz
 
-O algoritmo do X é simples: **o que você dá, recebe de volta.** (Lá ele)
+O algoritmo do X é simples: **o que você dá, recebe de volta.**
 
 O problema é que a gente lê um monte de post, acha interessante, mas esquece de curtir. O `readlike` resolve isso de forma inteligente:
 
@@ -33,33 +33,61 @@ O problema é que a gente lê um monte de post, acha interessante, mas esquece d
 
 ## 🚀 Instalação
 
-> A extensão ainda não está na Opera Store. Instale manualmente em 3 passos:
+> Baixe o zip em [Releases](https://github.com/WilliamP2P/readlike/releases) e siga as instruções do seu navegador abaixo.
 
-**1. Baixe o zip**
+---
 
-Vá em [Releases](https://github.com/WilliamP2P/readlike/releases) e baixe o arquivo `readlike.zip`
+### 🔵 Google Chrome
 
-**2. Extraia a pasta**
+1. Baixe e **extraia** o `readlike.zip`
+2. Acesse `chrome://extensions` na barra de endereço
+3. Ative o **Modo do desenvolvedor** (toggle no canto superior direito)
+4. Clique em **"Carregar sem compactação"**
+5. Selecione a pasta extraída
+6. ✅ Pronto — o ícone ❤️ aparece na barra
 
-Descompacte o `.zip` em qualquer lugar no seu computador
+---
 
-**3. Carregue no Opera**
+### 🔴 Opera
 
-```
-opera://extensions
-```
+1. Baixe e **extraia** o `readlike.zip`
+2. Acesse `opera://extensions` na barra de endereço
+3. Ative o **Modo de desenvolvedor** (toggle no canto superior direito)
+4. Clique em **"Carregar sem compactação"**
+5. Selecione a pasta extraída
+6. ✅ Pronto — o ícone ❤️ aparece na barra
 
-Ative o **Modo de desenvolvedor** (canto superior direito) → clique em **Carregar sem compactação** → selecione a pasta extraída
+---
 
-✅ Pronto. O ícone ❤️ vai aparecer na barra do navegador.
+### 🔵 Microsoft Edge
+
+1. Baixe e **extraia** o `readlike.zip`
+2. Acesse `edge://extensions` na barra de endereço
+3. Ative o **Modo de desenvolvedor** (toggle no menu lateral esquerdo)
+4. Clique em **"Carregar sem compactação"**
+5. Selecione a pasta extraída
+6. ✅ Pronto — o ícone ❤️ aparece na barra
+
+---
+
+### 🟠 Brave
+
+1. Baixe e **extraia** o `readlike.zip`
+2. Acesse `brave://extensions` na barra de endereço
+3. Ative o **Modo de desenvolvedor** (toggle no canto superior direito)
+4. Clique em **"Carregar sem compactação"**
+5. Selecione a pasta extraída
+6. ✅ Pronto — o ícone ❤️ aparece na barra
+
+---
+
+> ⚠️ **Firefox não é suportado** — usa um sistema de extensões diferente (Manifest V2).
 
 ---
 
 ## ⚙️ Como usar
 
-Após instalar, é só usar o X normalmente.
-
-Clique no ícone ❤️ na barra para:
+Após instalar, é só usar o X normalmente. Clique no ícone ❤️ na barra para ajustar:
 
 | Opção | Descrição |
 |---|---|
@@ -69,8 +97,6 @@ Clique no ícone ❤️ na barra para:
 ---
 
 ## 🧠 Como funciona por dentro
-
-A extensão usa a [Intersection Observer API](https://developer.mozilla.org/en-US/docs/Web/API/Intersection_Observer_API) para monitorar quais posts estão visíveis na tela.
 
 ```
 Post entra na tela (60%+ visível)
@@ -84,7 +110,7 @@ Ficou o tempo definido?  →  Curte silenciosamente ✓
 
 - Posts já curtidos são ignorados
 - Funciona com feed infinito (detecta posts novos automaticamente)
-- Delay humanizado antes de curtir (evita parecer automação)
+- Delay humanizado antes de curtir
 
 ---
 
@@ -92,10 +118,10 @@ Ficou o tempo definido?  →  Curte silenciosamente ✓
 
 ```
 readlike/
-├── manifest.json      # Configuração da extensão
-├── content.js         # Lógica principal (observer + curtir)
-├── popup.html         # Interface do popup
-├── popup.js           # Lógica do popup
+├── manifest.json
+├── content.js
+├── popup.html
+├── popup.js
 └── icons/
     ├── icon16.png
     ├── icon48.png
@@ -106,7 +132,7 @@ readlike/
 
 ## 🤝 Contribuindo
 
-PRs são bem-vindos! Se quiser adicionar suporte a outras plataformas (Instagram, LinkedIn...) abre uma issue.
+PRs são bem-vindos! Se quiser adicionar suporte a outras plataformas abre uma issue.
 
 ---
 
