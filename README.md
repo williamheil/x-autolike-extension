@@ -144,7 +144,7 @@ MIT — use, modifique e distribua à vontade.
 
 <div align="center">
 
-Feito por [@WilliamP2P](https://x.com/WilliamP2P) com ajuda do [Claude](https://claude.ai)
+Feito por [@WilliamP2P](https://x.com/WilliamP2P) com ajuda 100% do [Claude](https://claude.ai)
 
 *Se curtiu o projeto, deixa uma ⭐ no repo — o algoritmo do GitHub também é retributivo* 😄
 
