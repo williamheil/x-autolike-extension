@@ -2,14 +2,14 @@
 <html lang="pt-BR">
 <head>
   <meta charset="UTF-8" />
-  <title>Auto Like ao Ler</title>
+  <title>readlike</title>
   <style>
     @import url('https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&display=swap');
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
     :root {
       --bg: #0a0a0f; --surface: #13131a; --border: #1e1e2e;
       --accent: #1d9bf0; --accent-glow: rgba(29,155,240,0.22);
-      --green: #00d084; --red: #f4212e;
+      --green: #00d084; --red: #f4212e; --yellow: #f59e0b;
       --text: #e8e8f0; --muted: #6e6e8a;
     }
     body { width: 300px; background: var(--bg); color: var(--text); font-family: 'Syne', system-ui, sans-serif; overflow: hidden; }
@@ -37,28 +37,30 @@
     .slider::before { content:''; position:absolute; height:20px; width:20px; left:3px; bottom:3px; background:white; border-radius:50%; transition:transform .25s; box-shadow:0 1px 4px rgba(0,0,0,.4); }
     input:checked + .slider { background:var(--accent); box-shadow:0 0 12px var(--accent-glow); }
     input:checked + .slider::before { transform:translateX(20px); }
+    #unlimitedSwitch:checked + .slider { background: var(--green); box-shadow:0 0 12px rgba(0,208,132,0.3); }
 
     .status-badge { display:flex; align-items:center; gap:8px; padding:9px 14px; border-radius:10px; font-size:12px; font-weight:600; background:var(--surface); border:1px solid var(--border); }
     .status-dot { width:8px; height:8px; border-radius:50%; flex-shrink:0; }
     .status-badge.on .status-dot { background:var(--green); box-shadow:0 0 6px var(--green); animation:blink 1.5s ease-in-out infinite; }
     .status-badge.off .status-dot { background:var(--muted); }
     .status-badge.limit .status-dot { background:var(--red); box-shadow:0 0 6px var(--red); }
+    .status-badge.unlimited .status-dot { background:var(--green); box-shadow:0 0 6px var(--green); animation:blink 1.5s ease-in-out infinite; }
     @keyframes blink { 0%,100%{opacity:1} 50%{opacity:0.4} }
 
-    /* Sliders */
-    .slider-block { display:flex; flex-direction:column; gap:8px; margin-top:10px; }
+    .slider-block { display:flex; flex-direction:column; gap:10px; }
     .slider-row { display:flex; flex-direction:column; gap:6px; }
     .slider-header { display:flex; justify-content:space-between; align-items:center; }
     .slider-header small { font-size:11px; color:var(--muted); font-weight:600; }
     .badge { background:var(--accent); color:#fff; font-size:11px; font-weight:700; padding:2px 9px; border-radius:20px; }
     .badge.red { background: var(--red); }
+    .badge.green { background: var(--green); }
 
-    input[type=range] { -webkit-appearance:none; width:100%; height:4px; border-radius:4px; outline:none; cursor:pointer; }
+    input[type=range] { -webkit-appearance:none; width:100%; height:4px; border-radius:4px; outline:none; cursor:pointer; transition:opacity .2s; }
+    input[type=range]:disabled { opacity:0.3; cursor:not-allowed; }
     input[type=range]::-webkit-slider-thumb { -webkit-appearance:none; width:16px; height:16px; border-radius:50%; background:var(--accent); box-shadow:0 0 6px var(--accent-glow); cursor:pointer; }
     #limitRange::-webkit-slider-thumb { background: var(--red); box-shadow:0 0 6px rgba(244,33,46,0.3); }
     .range-labels { display:flex; justify-content:space-between; font-size:10px; color:var(--muted); }
 
-    /* Contador */
     .counter-bar { background:var(--surface); border:1px solid var(--border); border-radius:12px; padding:12px 14px; }
     .counter-top { display:flex; justify-content:space-between; align-items:center; margin-bottom:8px; }
     .counter-top span { font-size:11px; color:var(--muted); font-weight:600; }
@@ -66,10 +68,13 @@
     .counter-num em { font-size:12px; font-style:normal; color:var(--muted); font-weight:400; }
     .progress-track { background:var(--border); border-radius:99px; height:5px; overflow:hidden; }
     .progress-fill { height:100%; border-radius:99px; background:var(--accent); transition:width .4s ease; }
-    .progress-fill.warning { background: #f59e0b; }
+    .progress-fill.warning { background: var(--yellow); }
     .progress-fill.danger  { background: var(--red); }
+    .progress-fill.unlimited { background: var(--green); width:100% !important; }
 
     .footer { padding:10px 18px; border-top:1px solid var(--border); font-size:10px; color:var(--muted); text-align:center; }
+    .footer a { color:var(--accent); text-decoration:none; cursor:pointer; }
+    .footer a:hover { text-decoration:underline; }
   </style>
 </head>
 <body>
@@ -83,7 +88,7 @@
 
   <div class="body">
 
-    <!-- Toggle -->
+    <!-- Toggle principal -->
     <div class="card" id="toggleCard">
       <div class="row">
         <div class="label">
@@ -116,13 +121,26 @@
           <div class="range-labels"><span>2s</span><span>8s</span></div>
         </div>
 
+        <!-- Limite diário + toggle ilimitado -->
         <div class="slider-row" style="margin-top:4px">
           <div class="slider-header">
-            <small>🔒 Limite diário de curtidas</small>
+            <small>🔒 Limite diário</small>
             <span class="badge red" id="limitLabel">100/dia</span>
           </div>
           <input type="range" id="limitRange" min="20" max="500" step="10" value="100" />
           <div class="range-labels"><span>20</span><span>500</span></div>
+        </div>
+
+        <!-- Toggle ilimitado -->
+        <div class="row" style="margin-top:2px; padding-top:10px; border-top:1px solid var(--border)">
+          <div class="label">
+            <strong>♾️ Ilimitado</strong>
+            <span>Sem teto de curtidas</span>
+          </div>
+          <label class="switch">
+            <input type="checkbox" id="unlimitedSwitch" />
+            <span class="slider"></span>
+          </label>
         </div>
 
       </div>
@@ -141,7 +159,9 @@
 
   </div>
 
-  <div class="footer">readlike • by <a href="https://x.com/WilliamP2P" style="color:var(--accent);text-decoration:none;">@WilliamP2P</a></div>
+  <div class="footer">
+    readlike • by <a id="twitterLink" href="#">@WilliamP2P</a>
+  </div>
 
   <script src="popup.js"></script>
 </body>
