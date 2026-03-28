@@ -9,9 +9,11 @@
     :root {
       --bg: #0a0a0f; --surface: #13131a; --border: #1e1e2e;
       --accent: #1d9bf0; --accent-glow: rgba(29,155,240,0.22);
+      --green: #00d084; --red: #f4212e;
       --text: #e8e8f0; --muted: #6e6e8a;
     }
-    body { width: 290px; background: var(--bg); color: var(--text); font-family: 'Syne', system-ui, sans-serif; overflow: hidden; }
+    body { width: 300px; background: var(--bg); color: var(--text); font-family: 'Syne', system-ui, sans-serif; overflow: hidden; }
+
     .header { background: var(--surface); border-bottom: 1px solid var(--border); padding: 18px 20px 14px; position: relative; overflow: hidden; }
     .header::before { content:''; position:absolute; top:-30px; right:-30px; width:100px; height:100px; border-radius:50%; background:var(--accent-glow); filter:blur(30px); pointer-events:none; }
     .logo-row { display:flex; align-items:center; gap:10px; margin-bottom:4px; }
@@ -19,71 +21,128 @@
     @keyframes pulse { 0%,100%{transform:scale(1)} 50%{transform:scale(1.15)} }
     .title { font-size:17px; font-weight:800; letter-spacing:-0.3px; }
     .subtitle { font-size:11px; color:var(--muted); margin-left:32px; }
-    .body { padding: 20px; display:flex; flex-direction:column; gap:14px; }
-    .toggle-card { background:var(--surface); border:1px solid var(--border); border-radius:14px; padding:16px; display:flex; align-items:center; justify-content:space-between; transition: border-color .2s; }
-    .toggle-card.active { border-color:var(--accent); box-shadow:0 0 0 1px var(--accent-glow),inset 0 0 20px var(--accent-glow); }
-    .toggle-label strong { font-size:14px; font-weight:700; display:block; }
-    .toggle-label span { font-size:11px; color:var(--muted); }
+
+    .body { padding: 18px; display:flex; flex-direction:column; gap:12px; }
+
+    .card { background:var(--surface); border:1px solid var(--border); border-radius:14px; padding:14px; }
+    .card.active { border-color:var(--accent); box-shadow:0 0 0 1px var(--accent-glow),inset 0 0 20px var(--accent-glow); }
+
+    .row { display:flex; align-items:center; justify-content:space-between; }
+    .label strong { font-size:13px; font-weight:700; display:block; }
+    .label span { font-size:11px; color:var(--muted); }
+
     .switch { position:relative; width:46px; height:26px; flex-shrink:0; }
     .switch input { opacity:0; width:0; height:0; }
     .slider { position:absolute; inset:0; background:var(--border); border-radius:50px; cursor:pointer; transition:background .25s; }
     .slider::before { content:''; position:absolute; height:20px; width:20px; left:3px; bottom:3px; background:white; border-radius:50%; transition:transform .25s; box-shadow:0 1px 4px rgba(0,0,0,.4); }
     input:checked + .slider { background:var(--accent); box-shadow:0 0 12px var(--accent-glow); }
     input:checked + .slider::before { transform:translateX(20px); }
-    .status-badge { display:flex; align-items:center; gap:8px; padding:10px 14px; border-radius:10px; font-size:12px; font-weight:600; background:var(--surface); border:1px solid var(--border); }
+
+    .status-badge { display:flex; align-items:center; gap:8px; padding:9px 14px; border-radius:10px; font-size:12px; font-weight:600; background:var(--surface); border:1px solid var(--border); }
     .status-dot { width:8px; height:8px; border-radius:50%; flex-shrink:0; }
-    .status-badge.on .status-dot { background:#00d084; box-shadow:0 0 6px #00d084; animation:blink 1.5s ease-in-out infinite; }
+    .status-badge.on .status-dot { background:var(--green); box-shadow:0 0 6px var(--green); animation:blink 1.5s ease-in-out infinite; }
     .status-badge.off .status-dot { background:var(--muted); }
+    .status-badge.limit .status-dot { background:var(--red); box-shadow:0 0 6px var(--red); }
     @keyframes blink { 0%,100%{opacity:1} 50%{opacity:0.4} }
-    .slider-card { background:var(--surface); border:1px solid var(--border); border-radius:14px; padding:16px; display:flex; flex-direction:column; gap:10px; }
+
+    /* Sliders */
+    .slider-block { display:flex; flex-direction:column; gap:8px; margin-top:10px; }
+    .slider-row { display:flex; flex-direction:column; gap:6px; }
     .slider-header { display:flex; justify-content:space-between; align-items:center; }
-    .slider-header strong { font-size:13px; font-weight:700; }
-    .time-badge { background:var(--accent); color:#fff; font-size:11px; font-weight:700; padding:3px 10px; border-radius:20px; }
-    input[type=range] { -webkit-appearance:none; width:100%; height:4px; background: linear-gradient(to right, var(--accent) 0%, var(--accent) 50%, var(--border) 50%, var(--border) 100%); border-radius:4px; outline:none; cursor:pointer; }
-    input[type=range]::-webkit-slider-thumb { -webkit-appearance:none; width:18px; height:18px; border-radius:50%; background:var(--accent); box-shadow:0 0 8px var(--accent-glow); cursor:pointer; }
-    .range-labels { display:flex; justify-content:space-between; font-size:10px; color:var(--muted); margin-top:4px; }
-    .info-box { background:var(--surface); border:1px solid var(--border); border-radius:12px; padding:13px; font-size:11.5px; color:var(--muted); line-height:1.6; }
-    .info-box strong { color:var(--text); font-weight:600; }
-    .footer { padding:12px 20px; border-top:1px solid var(--border); font-size:10px; color:var(--muted); text-align:center; }
+    .slider-header small { font-size:11px; color:var(--muted); font-weight:600; }
+    .badge { background:var(--accent); color:#fff; font-size:11px; font-weight:700; padding:2px 9px; border-radius:20px; }
+    .badge.red { background: var(--red); }
+
+    input[type=range] { -webkit-appearance:none; width:100%; height:4px; border-radius:4px; outline:none; cursor:pointer; }
+    input[type=range]::-webkit-slider-thumb { -webkit-appearance:none; width:16px; height:16px; border-radius:50%; background:var(--accent); box-shadow:0 0 6px var(--accent-glow); cursor:pointer; }
+    #limitRange::-webkit-slider-thumb { background: var(--red); box-shadow:0 0 6px rgba(244,33,46,0.3); }
+    .range-labels { display:flex; justify-content:space-between; font-size:10px; color:var(--muted); }
+
+    /* Contador */
+    .counter-bar { background:var(--surface); border:1px solid var(--border); border-radius:12px; padding:12px 14px; }
+    .counter-top { display:flex; justify-content:space-between; align-items:center; margin-bottom:8px; }
+    .counter-top span { font-size:11px; color:var(--muted); font-weight:600; }
+    .counter-num { font-size:18px; font-weight:800; color:var(--text); }
+    .counter-num em { font-size:12px; font-style:normal; color:var(--muted); font-weight:400; }
+    .progress-track { background:var(--border); border-radius:99px; height:5px; overflow:hidden; }
+    .progress-fill { height:100%; border-radius:99px; background:var(--accent); transition:width .4s ease; }
+    .progress-fill.warning { background: #f59e0b; }
+    .progress-fill.danger  { background: var(--red); }
+
+    .footer { padding:10px 18px; border-top:1px solid var(--border); font-size:10px; color:var(--muted); text-align:center; }
   </style>
 </head>
 <body>
   <div class="header">
     <div class="logo-row">
       <span class="heart-icon">❤️</span>
-      <span class="title">Auto Like ao Ler</span>
+      <span class="title">readlike</span>
     </div>
     <div class="subtitle">Curte o que você realmente leu</div>
   </div>
+
   <div class="body">
-    <div class="toggle-card" id="toggleCard">
-      <div class="toggle-label">
-        <strong>Ativo ao scrollar</strong>
-        <span>Curte ao parar no post</span>
+
+    <!-- Toggle -->
+    <div class="card" id="toggleCard">
+      <div class="row">
+        <div class="label">
+          <strong>Auto curtir</strong>
+          <span>Ao parar num post</span>
+        </div>
+        <label class="switch">
+          <input type="checkbox" id="toggleSwitch" checked />
+          <span class="slider"></span>
+        </label>
       </div>
-      <label class="switch">
-        <input type="checkbox" id="toggleSwitch" checked />
-        <span class="slider"></span>
-      </label>
     </div>
+
+    <!-- Status -->
     <div class="status-badge on" id="statusBadge">
       <div class="status-dot"></div>
       <span id="statusText">Monitorando seu feed...</span>
     </div>
-    <div class="slider-card">
-      <div class="slider-header">
-        <strong>Tempo para curtir</strong>
-        <span class="time-badge" id="timeLabel">3s</span>
+
+    <!-- Sliders -->
+    <div class="card">
+      <div class="slider-block">
+
+        <div class="slider-row">
+          <div class="slider-header">
+            <small>⏱ Tempo para curtir</small>
+            <span class="badge" id="timeLabel">3s</span>
+          </div>
+          <input type="range" id="timeRange" min="2" max="8" step="0.5" value="3" />
+          <div class="range-labels"><span>2s</span><span>8s</span></div>
+        </div>
+
+        <div class="slider-row" style="margin-top:4px">
+          <div class="slider-header">
+            <small>🔒 Limite diário de curtidas</small>
+            <span class="badge red" id="limitLabel">100/dia</span>
+          </div>
+          <input type="range" id="limitRange" min="20" max="500" step="10" value="100" />
+          <div class="range-labels"><span>20</span><span>500</span></div>
+        </div>
+
       </div>
-      <input type="range" id="timeRange" min="2" max="8" step="0.5" value="3" />
-      <div class="range-labels"><span>2s (rápido)</span><span>8s (devagar)</span></div>
     </div>
-    <div class="info-box">
-      <strong>Como funciona:</strong><br />
-      Posts visíveis na tela pelo tempo definido são curtidos. Role rápido e ele <em>não</em> curte — só o que você realmente parou para ler.
+
+    <!-- Contador do dia -->
+    <div class="counter-bar">
+      <div class="counter-top">
+        <span>Curtidas hoje</span>
+        <span class="counter-num"><span id="countNum">0</span> <em id="countOf">/ 100</em></span>
+      </div>
+      <div class="progress-track">
+        <div class="progress-fill" id="progressFill" style="width:0%"></div>
+      </div>
     </div>
+
   </div>
-  <div class="footer">Auto Like ao Ler • Opera Extension</div>
+
+  <div class="footer">readlike • by <a href="https://x.com/WilliamP2P" style="color:var(--accent);text-decoration:none;">@WilliamP2P</a></div>
+
   <script src="popup.js"></script>
 </body>
 </html>

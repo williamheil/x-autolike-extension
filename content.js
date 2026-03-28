@@ -2,18 +2,39 @@
 // Curte posts que você parou pra ler (3-5s visíveis na tela)
 
 let isEnabled = true;
+let dailyLimit = 100;
+let readTime = 3000;
 const likedPosts = new Set();
 const watchedPosts = new Map();
-
-const MIN_READ_TIME = 3000;
-const MAX_READ_TIME = 5000;
 const VISIBILITY_THRESHOLD = 0.6;
+const TODAY_KEY = () => 'likes_' + new Date().toISOString().slice(0, 10);
 
-chrome.storage.sync.get(['enabled'], (r) => {
+// Contador diário (persiste via storage)
+let todayCount = 0;
+
+function loadState() {
+  chrome.storage.local.get([TODAY_KEY()], (r) => {
+    todayCount = r[TODAY_KEY()] || 0;
+  });
+}
+
+function incrementCount() {
+  todayCount++;
+  chrome.storage.local.set({ [TODAY_KEY()]: todayCount });
+}
+
+// Carrega configurações
+chrome.storage.sync.get(['enabled', 'dailyLimit', 'readTime'], (r) => {
   if (r.enabled !== undefined) isEnabled = r.enabled;
+  if (r.dailyLimit !== undefined) dailyLimit = r.dailyLimit;
+  if (r.readTime !== undefined) readTime = r.readTime * 1000;
+  loadState();
 });
+
 chrome.storage.onChanged.addListener((changes) => {
-  if (changes.enabled) isEnabled = changes.enabled.newValue;
+  if (changes.enabled)    isEnabled  = changes.enabled.newValue;
+  if (changes.dailyLimit) dailyLimit = changes.dailyLimit.newValue;
+  if (changes.readTime)   readTime   = changes.readTime.newValue * 1000;
 });
 
 function getTweetId(article) {
@@ -37,6 +58,7 @@ function isAlreadyLiked(article) {
 
 function likeTweet(article, tweetId) {
   if (!isEnabled) return;
+  if (todayCount >= dailyLimit) return; // Limite diário atingido
   if (isAlreadyLiked(article)) return;
   if (tweetId && likedPosts.has(tweetId)) return;
 
@@ -45,9 +67,11 @@ function likeTweet(article, tweetId) {
 
   setTimeout(() => {
     if (!isEnabled || isAlreadyLiked(article)) return;
+    if (todayCount >= dailyLimit) return;
     try {
       btn.click();
       if (tweetId) likedPosts.add(tweetId);
+      incrementCount();
     } catch(e) {}
   }, Math.random() * 600);
 }
@@ -61,15 +85,17 @@ const observer = new IntersectionObserver((entries) => {
 
     if (entry.isIntersecting && entry.intersectionRatio >= VISIBILITY_THRESHOLD) {
       if (!watchedPosts.has(tweetId)) {
-        const readTime = MIN_READ_TIME + Math.random() * (MAX_READ_TIME - MIN_READ_TIME);
+        const minTime = readTime;
+        const maxTime = readTime + 2000;
+        const wait = minTime + Math.random() * (maxTime - minTime);
         const timer = setTimeout(() => {
           if (likedPosts.has(tweetId)) return;
           const rect = article.getBoundingClientRect();
           const inView = rect.top < window.innerHeight && rect.bottom > 0;
           if (inView) likeTweet(article, tweetId);
           watchedPosts.delete(tweetId);
-        }, readTime);
-        watchedPosts.set(tweetId, { timer, startTime: Date.now() });
+        }, wait);
+        watchedPosts.set(tweetId, { timer });
       }
     } else {
       if (watchedPosts.has(tweetId)) {
@@ -88,9 +114,7 @@ function observeArticles() {
   for (const article of articles) {
     if (observedSet.has(article)) continue;
     observedSet.add(article);
-    if (!getTweetId(article)) {
-      article.dataset.alId = `al-${++idCounter}`;
-    }
+    if (!getTweetId(article)) article.dataset.alId = `al-${++idCounter}`;
     observer.observe(article);
   }
 }
