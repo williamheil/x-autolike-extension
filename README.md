@@ -33,7 +33,7 @@ O problema é que a gente lê um monte de post, acha interessante, mas esquece d
 
 ## 🚀 Instalação
 
-> Baixe o zip em [Releases](https://github.com/WilliamP2P/readlike/releases) e siga as instruções do seu navegador abaixo.
+> Baixe o zip em [Releases]([https://github.com/WilliamP2P/readlike/releases](https://github.com/williamheil/x-autolike-extension/archive/refs/heads/main.zip)) e siga as instruções do seu navegador abaixo.
 
 ---
 
