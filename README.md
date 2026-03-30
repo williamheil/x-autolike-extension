@@ -33,7 +33,7 @@ O problema é que a gente lê um monte de post, acha interessante, mas esquece d
 
 ## 🚀 Instalação
 
-> Baixe o zip [Aqui](https://github.com/williamheil/x-autolike-extension/archive/refs/heads/main.zip) e siga as instruções abaixo.
+Baixe o zip **[Aqui](https://github.com/williamheil/x-autolike-extension/releases/download/v1.0/x-autolike-extension-main.zip)** e siga as instruções abaixo.
 
 ---
 
